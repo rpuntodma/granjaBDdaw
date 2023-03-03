@@ -37,19 +37,21 @@ public class Res implements Comparable<Res> {
 	public Res(int num_control) {
 		this.num_control = num_control;
 		especie = TipoRes.values()[(int) (Math.random()*(TipoRes.values()).length)];
-		raza = especie.name().toLowerCase() + " " + TipoRaza.values()[(int) (Math.random()*(TipoRaza.values()).length)].name().toLowerCase();
+		generarRaza();
 		sexo = Sexo.values()[(int) (Math.random()*(Sexo.values()).length)];
 		peso = (int) (Math.random()*100 + 20);
 		fechaN = LocalDate.of((int) (Math.random()*10 + 2005), (int) (Math.random()*12 + 1), (int) (Math.random()*28 + 1));
 		granja_actual = (int) (Math.random()*7+1);
 	}
 	
-	public Res(int num_control, int madre, int padre, int granja) {
+	public Res(int num_control, Res padre, Res madre) {
 		this(num_control);
 		fechaN = LocalDate.of((int) (Math.random()*7 + 2015), (int) (Math.random()*12 + 1), (int) (Math.random()*28 + 1));
-		this.res_madre = madre;
-		this.res_padre = padre;
-		this.granja_nacimiento = granja;
+		setEspecie(madre.especie);
+		generarRaza();
+		this.res_madre = madre.num_control;
+		this.res_padre = padre.num_control;
+		this.granja_nacimiento = madre.granja_actual;
 	}
 	
 	
@@ -92,6 +94,14 @@ public class Res implements Comparable<Res> {
 
 	public Integer getGranja_nacimiento() {
 		return granja_nacimiento;
+	}
+	
+	public void setEspecie(TipoRes especie) {
+		this.especie = especie;
+	}
+	
+	public void generarRaza() {
+		raza = especie.name().toLowerCase() + " " + TipoRaza.values()[(int) (Math.random()*(TipoRaza.values()).length)].name().toLowerCase();
 	}
 
 	@Override
@@ -158,9 +168,9 @@ public class Res implements Comparable<Res> {
 			Res r2 = Res.getRes(c2+1, reses);
 			if (Res.diferenteSexo(r1, r2) && Res.mismaGranja(r1, r2) && Res.mismaEspecie(r1, r2))
 				if (r1.getSexo().equals(Sexo.H))
-					reses_hijas.add(new Res(++control, c1+1, c2+1, r1.granja_actual));
+					reses_hijas.add(new Res(++control, r2, r1));
 				else
-					reses_hijas.add(new Res(++control, c2+1, c1+1, r1.granja_actual));
+					reses_hijas.add(new Res(++control, r1, r2));
 		}
 		reses.addAll(reses_hijas);
 		for (Res res : reses) {
