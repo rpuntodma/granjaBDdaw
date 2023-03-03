@@ -109,6 +109,10 @@ public class Res implements Comparable<Res> {
 		return r1.getGranja_actual().equals(r2.getGranja_actual());
 	}
 	
+	public static boolean mismaEspecie(Res r1, Res r2) {
+		return r1.getEspecie().equals(r2.getEspecie());
+	}
+	
 	public static Res getRes(int num, Set<Res> c) {
 		for (Res res : c) {
 			if (res.getNum_control() == num)
@@ -152,7 +156,7 @@ public class Res implements Comparable<Res> {
 			int c2 = (int) (Math.random()*NUM_RESES);
 			Res r1 = Res.getRes(c1+1, reses);
 			Res r2 = Res.getRes(c2+1, reses);
-			if (Res.diferenteSexo(r1, r2) && Res.mismaGranja(r1, r2))
+			if (Res.diferenteSexo(r1, r2) && Res.mismaGranja(r1, r2) && Res.mismaEspecie(r1, r2))
 				if (r1.getSexo().equals(Sexo.H))
 					reses_hijas.add(new Res(++control, c1+1, c2+1, r1.granja_actual));
 				else
