@@ -112,7 +112,7 @@ public class Res implements Comparable<Res> {
 	
 	
 	public static boolean diferenteSexo(Res r1, Res r2) {
-		return r1.getSexo().equals(r2.getSexo());
+		return !r1.getSexo().equals(r2.getSexo());
 	}
 	
 	public static boolean mismaGranja(Res r1, Res r2) {
